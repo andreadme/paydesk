@@ -21,3 +21,6 @@ Thumbs.db
 # Temporary files
 *.log
 *.tmp
+
+dist/
+node_modules/
