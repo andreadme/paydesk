@@ -16,4 +16,22 @@ class User_model extends CI_Model
 
         return false;
     }
+
+    public function get_users()
+    {
+        $this->db->select('id, name, email, role');
+        $query = $this->db->get('users');
+
+        return $query->result();
+    }
+
+    public function create_user($name, $email, $hashed_password)
+    {
+        return $this->db->insert('users', [
+            'name' => $name,
+            'email' => $email,
+            'role' => 'customer',
+            'password_hash' => $hashed_password
+        ]);
+    }
 }

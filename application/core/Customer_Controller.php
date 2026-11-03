@@ -1,6 +1,6 @@
 <?php
 
-class Custoomer_Controller extends MY_Controller
+class Customer_Controller extends MY_Controller
 {
     public function __construct()
     {
