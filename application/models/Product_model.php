@@ -21,4 +21,18 @@ class Product_model extends CI_Model
             'stock' => $stock,
         ]);
     }
+
+    public function get_product($id)
+    {
+        $this->db->select('id, name, price, stock');
+        $this->db->where('id', $id);
+        $this->db->limit(1);
+        $query = $this->db->get('products');
+
+        if ($query->num_rows() === 1) {
+            return $query->row();
+        }
+
+        return false;
+    }
 }
