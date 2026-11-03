@@ -277,13 +277,16 @@
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h1 class="mb-0 fs-3">Dashboard</h1>
+                            <h1 class="mb-0 fs-3">Available Products</h1>
+                            <div class="col-12">
+                                <p class="text-muted">Browse our products and add items to your cart.</p>
+                            </div>
                         </div>
                         <div class="col-sm-6">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb float-sm-end">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Available Products</li>
                                 </ol>
                             </nav>
                         </div>
@@ -298,14 +301,6 @@
             <div class="app-content">
 
                 <div class="container-fluid">
-
-                    <div class="row mb-4">
-                        <div class="col-12">
-                            <h3>Available Products</h3>
-                            <p class="text-muted">Browse our products and add items to your cart.</p>
-                        </div>
-                    </div>
-
                     <div class="row g-4">
                         <?php if (empty($products)): ?>
                         <div class="col-12 col-sm-6 col-lg-4 col-xl-3">There are no products listed</div>
@@ -463,8 +458,7 @@
                             </button>
                             <?= form_close() ?>
 
-                            <input type="number" name="quantity"
-                                class="form-control form-control-sm text-center"
+                            <input type="number" name="quantity" class="form-control form-control-sm text-center"
                                 style="width: 75px;" value="<?= (int) $cart_item['quantity'] ?>" min="1"
                                 max="9999" step="1" required>
 
@@ -504,6 +498,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 <?php endif; ?>
+                <?php $info = $this->session->flashdata('info'); ?>
+
+                <?php if ($info): ?>
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    <?= html_escape($info) ?>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php endif; ?>
                 <div class="d-flex justify-content-between mb-2">
                     <span class="text-muted">Subtotal</span>
                     <strong>$<?= $subtotal ?></strong>
@@ -514,10 +518,11 @@
                     will be calculated during checkout.
                 </p>
 
-                <a href="#" class="btn btn-primary w-100">
-                    Proceed to Checkout
-                    <i class="bi bi-arrow-right ms-2"></i>
-                </a>
+                <?= form_open('customer/checkout') ?>
+                
+                <button submit="POST" class="btn btn-primary w-100">Proceed to Checkout<i class="bi bi-arrow-right ms-2"></i></button>
+
+                <?= form_close() ?>
 
                 <button type="button" class="btn btn-outline-secondary w-100 mt-2" data-bs-dismiss="offcanvas">
                     Continue Shopping

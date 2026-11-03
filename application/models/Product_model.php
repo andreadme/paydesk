@@ -24,7 +24,7 @@ class Product_model extends CI_Model
 
     public function get_product($id)
     {
-        $this->db->select('id, name, price, stock');
+        $this->db->select('id, name, price, stock, is_active');
         $this->db->where('id', $id);
         $this->db->limit(1);
         $query = $this->db->get('products');

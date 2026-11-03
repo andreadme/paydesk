@@ -99,4 +99,42 @@ class Customer extends Customer_Controller
 
         redirect('customer/products');
     }
+
+    public function checkout()
+    {
+        $cart_items = $this->session->userdata('cart');
+
+        if (empty($cart_items)) {
+            $this->session->set_flashdata('info', 'Your shopping cart is empty. Please add products to your cart before proceeding to checkout.');
+            redirect('customer/products');
+
+            return;
+        }
+
+        $new_cart_items = [];
+        foreach ($cart_items as $product_id => $cart_item) {
+            $product = $this->product_model->get_product($product_id);
+
+            if ($product && $product->is_active) {
+                if ($cart_item['quantity'] > $product->stock) {
+                    $this->session->set_flashdata('warning', 'The requested quantity for '.$product->name.' exceeds the available stock. Please update your cart quantity and try again.');
+                    redirect('customer/products');
+                    return;
+                } else {
+                    $line_total = $cart_item['quantity'] * $product->price;
+                    $new_cart_items[$product_id]['name'] = $product->name;
+                    $new_cart_items[$product_id]['price'] = $product->price;
+                    $new_cart_items[$product_id]['quantity'] = $cart_item['quantity'];
+                    $new_cart_items[$product_id]['line_total'] = $line_total;
+                }
+            } else {
+                $this->session->set_flashdata('warning', $cart_item['name'].' is no longer available for purchase. Please remove it from your cart to continue.');
+                redirect('customer/products');
+                return;
+            }
+        }
+
+        $this->session->set_userdata(['cart' => $new_cart_items]);
+        return $this->load->view('customer/checkout');
+    }
 }

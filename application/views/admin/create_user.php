@@ -279,9 +279,18 @@
                 <div class="container-fluid">
                     <!--begin::Row-->
                     <div class="row">
-                        <div class="text-bg-danger mb-2"><?php echo validation_errors(); ?></div>
+                        <?php if (validation_errors()): ?>
+                        <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                            <i class="bi bi-exclamation-circle-fill me-2"></i>
 
-                        <?php echo form_open('admin/store_user'); ?>
+                            <?= validation_errors('<div>', '</div>') ?>
+
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                        <?php endif; ?>
+
+                        <?= form_open('admin/store_user'); ?>
                         <label class="visually-hidden" for="userName">Name</label>
                         <div class="input-group mb-3">
                             <input id="userName" name="name" class="form-control" placeholder="Name"

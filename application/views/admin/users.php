@@ -279,10 +279,27 @@
                     <!--begin::Row-->
                     <div class="row">
                         <!-- /.col -->
-                        <?php if ($this->session->flashdata('success')): ?>
-                            <div class="text-bg-success mb-2"><?php echo $this->session->flashdata('success') ?></div>
-                        <?php elseif ($this->session->flashdata('error')): ?>
-                            <div class="text-bg-danger mb-2"><?php echo $this->session->flashdata('error') ?></div>
+                        <?php $success = $this->session->flashdata('success'); ?>
+                        <?php $error = $this->session->flashdata('error'); ?>
+
+                        <?php if ($success): ?>
+                        <div class="alert alert-success alert-dismissible fade show mb-2" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <?= html_escape($success) ?>
+
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                        <?php endif; ?>
+
+                        <?php if ($error): ?>
+                        <div class="alert alert-danger alert-dismissible fade show mb-2" role="alert">
+                            <i class="bi bi-x-circle-fill me-2"></i>
+                            <?= html_escape($error) ?>
+
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
                         <?php endif; ?>
 
 
