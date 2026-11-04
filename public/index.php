@@ -319,4 +319,5 @@ if (is_array($parsedEnv)) {
         putenv($key.'='.$value);
     }
 }
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once BASEPATH.'core/CodeIgniter.php';

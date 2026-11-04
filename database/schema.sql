@@ -114,7 +114,7 @@ CREATE TABLE webhook_events (
     payment_id INT UNSIGNED,
     stripe_event_id VARCHAR(255) NOT NULL UNIQUE,
     event_type ENUM('checkout.session.completed', 'payment_intent.succeeded', 'payment_intent.payment_failed') NOT NULL,
-    processing_status ENUM('pending', 'processed', 'failed') NOT NULL DEFAULT 'pending',
+    processing_status ENUM('pending', 'processed', 'failed', 'ignored') NOT NULL DEFAULT 'pending',
     processed_at TIMESTAMP,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

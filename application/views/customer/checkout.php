@@ -279,7 +279,7 @@
                         <div class="col-sm-6">
                             <h1 class="mb-0 fs-3">Checkout</h1>
                             <div class="col-12">
-                                <p class="text-muted">Review your order before proceeding to payment.</p>
+                                <p class="text-muted">Review your order details before proceeding with payment.</p>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -325,7 +325,8 @@
                                             class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
                                             <div>
                                                 <h6 class="mb-1"><?= $cart_item['name'] ?></h6>
-                                                <small class="text-muted">Quantity: <?= $cart_item['quantity'] ?></small>
+                                                <small class="text-muted">Quantity:
+                                                    <?= $cart_item['quantity'] ?></small>
                                             </div>
                                             <div class="text-end">
                                                 <div>$<?= number_format((float) $cart_item['price'], 2) ?> each</div>
@@ -370,10 +371,12 @@
                                             <h4 class="mb-0">$<?= $subtotal ?></h4>
                                         </div>
 
-                                        <button type="button" class="btn btn-primary w-100">
+                                        <?= form_open('customer/confirm_payment') ?>
+                                        <button submit="POST" class="btn btn-primary w-100">
                                             <i class="bi bi-lock-fill me-2"></i>
                                             Proceed to Payment
                                         </button>
+                                        <?= form_close() ?>
 
                                         <div class="text-center mt-3">
                                             <small class="text-muted">
@@ -506,6 +509,15 @@
 
             <!-- Cart Summary -->
             <div class="border-top pt-3 mt-auto">
+                <?php $error = $this->session->flashdata('error'); ?>
+                <?php if ($error): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <?= html_escape($error) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php endif; ?>
+
                 <?php $warning = $this->session->flashdata('warning'); ?>
                 <?php if ($warning): ?>
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -514,8 +526,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 <?php endif; ?>
-                <?php $info = $this->session->flashdata('info'); ?>
 
+                <?php $info = $this->session->flashdata('info'); ?>
                 <?php if ($info): ?>
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
                     <i class="bi bi-info-circle-fill me-2"></i>

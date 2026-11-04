@@ -29,10 +29,14 @@ class Product_model extends CI_Model
         $this->db->limit(1);
         $query = $this->db->get('products');
 
-        if ($query->num_rows() === 1) {
-            return $query->row();
+        if ($query === false) {
+            return false; // db query failed
         }
-
-        return false;
+    
+        if ($query->num_rows() === 0) {
+            return null; // doesn't exist
+        }
+    
+        return $query->row(); // exists
     }
 }
