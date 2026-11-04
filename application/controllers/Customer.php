@@ -298,7 +298,7 @@ class Customer extends Customer_Controller
         $user_id = $this->session->userdata('user_id');
 
         $invoice = $this->invoice_model->get_user_invoice($invoice_id, $user_id);
-        $order_items = $this->invoice_model->get_invoice_items($invoice_id, $user_id);
+        $order_items = $this->invoice_model->get_user_invoice_items($invoice_id, $user_id);
 
         if ($invoice === false) {
             $this->session->set_flashdata('error', 'Unable to load your invoice. Please try again.');

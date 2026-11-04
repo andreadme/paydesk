@@ -96,9 +96,9 @@
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
         <?php
-        $cart_items = $this->session->userdata('cart');
-        $total_quantity = array_sum(array_column($cart_items, 'quantity'));
-        $subtotal = array_sum(array_column($cart_items, 'line_total'));
+        $cart_items = $this->session->userdata('cart') ?: [];
+        $total_quantity = array_sum(array_column($cart_items, 'quantity')) ?? 0;
+        $subtotal = array_sum(array_column($cart_items, 'line_total')) ?? 0;
         ?>
         <!--begin::Header-->
         <nav class="app-header navbar navbar-expand bg-body">

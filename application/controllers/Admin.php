@@ -9,6 +9,8 @@ class Admin extends Admin_Controller
         $this->load->database();
         $this->load->model('user_model');
         $this->load->model('product_model');
+        $this->load->model('invoice_model');
+        $this->load->model('receipt_model');
         $this->load->library('form_validation');
     }
 
@@ -92,5 +94,50 @@ class Admin extends Admin_Controller
         }
 
         redirect('admin/products');
+    }
+
+    public function invoices()
+    {
+        $invoices = $this->invoice_model->get_invoices();
+        $this->load->view('admin/invoices', [
+            'invoices' => $invoices
+        ]);
+    }
+
+    public function invoice($invoice_id)
+    {
+        $invoice = $this->invoice_model->get_invoice($invoice_id);
+
+        if ($invoice === false) {
+            $this->session->set_flashdata('error', 'Unable to load the invoice details. Please try again.');
+            redirect('admin/invoices');
+            return;
+        } elseif ($invoice === null) {
+            $this->session->set_flashdata('error', 'The invoice details is not found.');
+            redirect('admin/invoices');
+            return;
+        } else {
+            $order_items = $this->invoice_model->get_invoice_items($invoice->id, $invoice->order_id);
+        }
+        $this->load->view('admin/invoice', [
+            'invoice' => $invoice,
+            'order_items' => $order_items
+        ]);
+    }
+
+    public function receipts()
+    {
+        $receipts = $this->receipt_model->get_receipts();
+        $this->load->view('admin/receipts', [
+            'receipts' => $receipts
+        ]);
+    }
+
+    public function receipt($receipt_id)
+    {
+        $receipt = $this->receipt_model->get_receipt($receipt_id);
+        $this->load->view('admin/receipt', [
+            'receipt' => $receipt
+        ]);
     }
 }

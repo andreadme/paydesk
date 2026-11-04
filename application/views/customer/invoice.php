@@ -96,7 +96,7 @@
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
         <?php
-        $cart_items = $this->session->userdata('cart');
+        $cart_items = $this->session->userdata('cart') ?: [];
         $total_quantity = array_sum(array_column($cart_items, 'quantity'));
         $subtotal = array_sum(array_column($cart_items, 'line_total'));
         ?>
@@ -439,12 +439,10 @@
                             </div>
 
                             <!-- Actions -->
-                            <div class="d-flex justify-content-end gap-2 mt-4 invoice-actions">
-
+                            <div class="d-flex justify-content-between gap-2 mt-4 invoice-actions">
                                 <a href=<?= site_url('customer/my_invoices') ?> class="btn btn-outline-secondary">
                                     Back to Invoices
                                 </a>
-
                                 <button type="button" class="btn btn-primary" onclick="window.print()">
                                     <i class="bi bi-printer me-1"></i>
                                     Print Invoice

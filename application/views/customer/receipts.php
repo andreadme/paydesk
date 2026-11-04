@@ -96,7 +96,7 @@
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
         <?php
-        $cart_items = $this->session->userdata('cart');
+        $cart_items = $this->session->userdata('cart') ?: [];
         $total_quantity = array_sum(array_column($cart_items, 'quantity'));
         $subtotal = array_sum(array_column($cart_items, 'line_total'));
         ?>
@@ -279,7 +279,10 @@
                         <div class="col-sm-6">
                             <h1 class="mb-0 fs-3">My Receipts</h1>
                             <div class="col-12">
-                                <p class="text-muted">View your payment receipts and transaction records.</p>
+                                <p class="text-muted">View your payment receipts and transaction records.</p><span
+                                    class="badge bg-primary">
+                                    <?= count($receipts) ?> receipts
+                                </span>
                             </div>
                         </div>
                         <div class="col-sm-6">

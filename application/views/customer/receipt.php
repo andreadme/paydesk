@@ -96,7 +96,7 @@
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
         <?php
-        $cart_items = $this->session->userdata('cart');
+        $cart_items = $this->session->userdata('cart') ?: [];
         $total_quantity = array_sum(array_column($cart_items, 'quantity'));
         $subtotal = array_sum(array_column($cart_items, 'line_total'));
         ?>
@@ -434,7 +434,7 @@
                             </div>
 
                             <!-- Actions -->
-                            <div class="d-flex justify-content-end gap-2 mt-4 receipt-actions">
+                            <div class="d-flex justify-content-between gap-2 mt-4 receipt-actions">
                                 <a href="#" class="btn btn-outline-secondary">
                                     <i class="bi bi-arrow-left me-1"></i> Back to Receipts
                                 </a>
