@@ -244,13 +244,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href=<?= site_url('customer/dashboard') ?> class="nav-link">
+                            <a href=<?= site_url('customer/my_invoices') ?> class="nav-link">
                                 <i class="nav-icon bi bi-file-earmark-text"></i>
                                 <p>My Invoices</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./generate/theme.html" class="nav-link">
+                            <a href=<?= site_url('customer/my_receipts') ?> class="nav-link">
                                 <i class="nav-icon bi bi-receipt"></i>
                                 <p>My Receipts</p>
                             </a>

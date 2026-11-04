@@ -95,6 +95,11 @@
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
+        <?php
+        $cart_items = $this->session->userdata('cart');
+        $total_quantity = array_sum(array_column($cart_items, 'quantity'));
+        $subtotal = array_sum(array_column($cart_items, 'line_total'));
+        ?>
         <!--begin::Header-->
         <nav class="app-header navbar navbar-expand bg-body">
             <!--begin::Container-->
@@ -223,13 +228,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href=<?php echo site_url('customer/dashboard'); ?> class="nav-link">
+                            <a href=<?= site_url('customer/my_invoices') ?> class="nav-link">
                                 <i class="nav-icon bi bi-file-earmark-text"></i>
                                 <p>My Invoices</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./generate/theme.html" class="nav-link">
+                            <a href=<?= site_url('customer/my_receipts') ?> class="nav-link">
                                 <i class="nav-icon bi bi-receipt"></i>
                                 <p>My Receipts</p>
                             </a>
@@ -389,6 +394,24 @@
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src=<?php echo base_url('assets/adminlte/js/adminlte.min.js'); ?>></script>
     <!--end::Required Plugin(AdminLTE)-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartElement = document.getElementById('shoppingCart');
+
+            if (sessionStorage.getItem('reopenCart') === 'true') {
+                sessionStorage.removeItem('reopenCart');
+
+                const cart = bootstrap.Offcanvas.getOrCreateInstance(cartElement);
+                cart.show();
+            }
+
+            cartElement.addEventListener('submit', function(event) {
+                if (event.target.matches('.cart-update-form')) {
+                    sessionStorage.setItem('reopenCart', 'true');
+                }
+            });
+        });
+    </script>
 </body>
 <!--end::Body-->
 

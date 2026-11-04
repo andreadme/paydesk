@@ -14,6 +14,8 @@ class Customer extends Customer_Controller
         $this->load->model('product_model');
         $this->load->model('order_model');
         $this->load->model('payment_model');
+        $this->load->model('invoice_model');
+        $this->load->model('receipt_model');
         $this->config->load('stripe');
     }
 
@@ -273,5 +275,70 @@ class Customer extends Customer_Controller
     public function show_payment_cancelled()
     {
         return $this->load->view('customer/payment_cancelled');
+    }
+
+    public function my_invoices()
+    {
+        $user_id = $this->session->userdata('user_id');
+
+        $my_invoices = $this->invoice_model->get_user_invoices($user_id);
+
+        if ($my_invoices === false) {
+            $this->session->set_flashdata('error', 'Unable to load your invoices. Please try again.');
+
+            redirect('customer/dashboard');
+            return;
+        }
+
+        return $this->load->view('customer/invoices', ['invoices' => $my_invoices]);
+    }
+
+    public function my_invoice($invoice_id)
+    {
+        $user_id = $this->session->userdata('user_id');
+
+        $invoice = $this->invoice_model->get_user_invoice($invoice_id, $user_id);
+        $order_items = $this->invoice_model->get_invoice_items($invoice_id, $user_id);
+
+        if ($invoice === false) {
+            $this->session->set_flashdata('error', 'Unable to load your invoice. Please try again.');
+
+            redirect('customer/my_invoices');
+            return;
+        }
+
+        return $this->load->view('customer/invoice', ['invoice' => $invoice, 'order_items' => $order_items]);
+    }
+
+    public function my_receipts()
+    {
+        $user_id = $this->session->userdata('user_id');
+
+        $my_receipts = $this->receipt_model->get_user_receipts($user_id);
+
+        if ($my_receipts === false) {
+            $this->session->set_flashdata('error', 'Unable to load your receipts. Please try again.');
+
+            redirect('customer/dashboard');
+            return;
+        }
+
+        return $this->load->view('customer/receipts', ['receipts' => $my_receipts]);
+    }
+
+    public function my_receipt($receipt_id)
+    {
+        $user_id = $this->session->userdata('user_id');
+
+        $receipt = $this->receipt_model->get_user_receipt($receipt_id, $user_id);
+
+        if ($receipt === false) {
+            $this->session->set_flashdata('error', 'Unable to load your receipt. Please try again.');
+
+            redirect('customer/my_receipts');
+            return;
+        }
+
+        return $this->load->view('customer/receipt', ['receipt' => $receipt]);
     }
 }
