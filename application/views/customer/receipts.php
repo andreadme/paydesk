@@ -238,12 +238,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href=<?= site_url('customer/dashboard') ?> class="nav-link">
-                                <i class="nav-icon bi bi-bag-check"></i>
-                                <p>My Orders</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href=<?= site_url('customer/my_invoices') ?> class="nav-link">
                                 <i class="nav-icon bi bi-file-earmark-text"></i>
                                 <p>My Invoices</p>
