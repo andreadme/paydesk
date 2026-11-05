@@ -39,33 +39,32 @@ class Receipt_model extends CI_Model
         return $query->row(); // exists
     }
 
-    public function create_receipt($payment_id, $issued_at)
+    public function create_receipt($data)
     {
-        return $this->db->insert('receipts', [
-            'payment_id' => $payment_id,
-            'receipt_number' => $this->generate_reference_number('REC-'),
-            'issued_at' => $issued_at,
-        ]);
+        $data['receipt_number'] = $this->generate_reference_number('REC-');
+        return $this->db->insert('receipts', $data);
     }
 
     public function generate_reference_number($prefix)
     {
+        $max_attempt = 5;
         if (!in_array($prefix, ['REC-'], true)) {
             throw new InvalidArgumentException('Unsupported reference number prefix.');
         }
 
-        $reference_number = $prefix . strtoupper(bin2hex(random_bytes(6)));
-
-        $is_existing = true;
-        if ($prefix === 'REC-') {
+        for ($attempt_count = 0; $attempt_count < $max_attempt; $attempt_count++) {
+            $reference_number = $prefix . strtoupper(bin2hex(random_bytes(6)));
             $is_existing = $this->get_receipt_by_receipt_number($reference_number);
+            if ($is_existing === null) {
+                return $reference_number;
+            } elseif ($is_existing === false) {
+                throw new RuntimeException("Unable to check receipt reference number.");
+            } else {
+                continue;
+            }
         }
 
-        if ($is_existing === null) {
-            return $reference_number;
-        }
-
-        return $this->generate_reference_number($prefix);
+        throw new RuntimeException("Unable to generate a unique receipt reference number after multiple attempts.");
     }
 
     public function get_user_receipts($user_id)

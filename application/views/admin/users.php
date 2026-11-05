@@ -235,7 +235,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href=<?php echo site_url('admin/payments'); ?> class="nav-link">
+                            <a href=<?php echo site_url('admin/payment_logs'); ?> class="nav-link">
                                 <i class="nav-icon bi bi bi-receipt"></i>
                                 <p>Payment Logs</p>
                             </a>

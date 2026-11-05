@@ -13,29 +13,43 @@ class Webhook_event_model extends CI_Model
         if ($query === false) {
             return false; // db query failed
         }
-    
+
         if ($query->num_rows() === 0) {
             return null; // doesn't exist
         }
-    
+
         return $query->row(); // exists
     }
 
-    public function create_event($stripe_event_id, $event_type)
+    public function create_event($data)
     {
-        return $this->db->insert('webhook_events', [
-            'stripe_event_id' => $stripe_event_id,
-            'event_type' => $event_type
-        ]);
+        return $this->db->insert('webhook_events', $data);
     }
 
-    public function update_event($event_id, $event_data)
+    public function update_event($event_id, $data)
     {
         $this->db->where('id', $event_id);
+        return $this->db->update('webhook_events', $data);
+    }
 
-        return $this->db->update('webhook_events', [
-            'processing_status' => $event_data['processing_status'],
-            'processed_at' => $event_data['processed_at'],
-        ]);
+    public function claim_event($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->where('processing_status', 'pending');
+        $result = $this->db->update('webhook_events', ['processing_status' => 'processing']);
+
+        if ($result === false) {
+            return false;
+        } else {
+            $affected_rows = $this->db->affected_rows();
+
+            if ($affected_rows === 1) {
+                return 1;
+            } elseif ($affected_rows === 0) {
+                return 0;
+            }
+            
+            return false;
+        }
     }
 }

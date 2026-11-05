@@ -12,14 +12,9 @@ class Product_model extends CI_Model
         return $query->result();
     }
 
-    public function create_product($name, $description, $price, $stock)
+    public function create_product($data)
     {
-        return $this->db->insert('products', [
-            'name' => $name,
-            'description' => $description,
-            'price' => $price,
-            'stock' => $stock,
-        ]);
+        return $this->db->insert('products', $data);
     }
 
     public function get_product($id)

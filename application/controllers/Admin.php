@@ -11,6 +11,7 @@ class Admin extends Admin_Controller
         $this->load->model('product_model');
         $this->load->model('invoice_model');
         $this->load->model('receipt_model');
+        $this->load->model('payment_model');
         $this->load->library('form_validation');
     }
 
@@ -47,7 +48,12 @@ class Admin extends Admin_Controller
 
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-        $data = $this->user_model->create_user($name, $email, $hashed_password);
+        $data = $this->user_model->create_user([
+            'name' => $name,
+            'email' => $email,
+            'role' => 'customer',
+            'password_hash' => $hashed_password
+        ]);
 
         if ($data) {
             $this->session->set_flashdata('success', 'User created successfully!');
@@ -85,7 +91,12 @@ class Admin extends Admin_Controller
         $stock = $this->input->post('stock');
         $price = $this->input->post('price');
 
-        $data = $this->product_model->create_product($name, $description, $stock, $price);
+        $data = $this->product_model->create_product([
+            'name' => $name, 
+            'description' => $description, 
+            'stock' => $stock, 
+            'price' => $price
+        ]);
 
         if ($data) {
             $this->session->set_flashdata('success', 'Product created successfully!');
@@ -138,6 +149,14 @@ class Admin extends Admin_Controller
         $receipt = $this->receipt_model->get_receipt($receipt_id);
         $this->load->view('admin/receipt', [
             'receipt' => $receipt
+        ]);
+    }
+
+    public function payment_logs()
+    {
+        $payment_logs = $this->payment_model->get_payment_logs();
+        $this->load->view('admin/payment_logs', [
+            'payment_logs' => $payment_logs
         ]);
     }
 }
