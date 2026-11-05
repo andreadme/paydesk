@@ -45,14 +45,10 @@ class Invoice_model extends CI_Model
         $query = $this->db->get('invoices');
 
         if ($query === false) {
-            return false; // db query failed
+            return false;
         }
 
-        if ($query->num_rows() === 0) {
-            return null; // doesn't exist
-        }
-
-        return $query->row(); // exists
+        return $query->result();
     }
 
     public function get_user_invoice($invoice_id, $user_id)
