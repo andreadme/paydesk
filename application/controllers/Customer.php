@@ -305,6 +305,9 @@ class Customer extends Customer_Controller
 
             redirect('customer/my_invoices');
             return;
+        } elseif ($invoice === null) {
+            redirect('customer/my_invoices');
+            return;
         }
 
         return $this->load->view('customer/invoice', ['invoice' => $invoice, 'order_items' => $order_items]);
@@ -335,6 +338,9 @@ class Customer extends Customer_Controller
         if ($receipt === false) {
             $this->session->set_flashdata('error', 'Unable to load your receipt. Please try again.');
 
+            redirect('customer/my_receipts');
+            return;
+        } elseif ($receipt === null) {
             redirect('customer/my_receipts');
             return;
         }
