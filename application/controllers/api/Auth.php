@@ -24,7 +24,7 @@ class Auth extends CI_Controller
             ->get($this->config->item('api_user_table'))
             ->row();
 
-        if (!$user || !password_verify($password, $user->password)) {
+        if (!$user || !password_verify($password, $user->password_hash)) {
             return $this->output
                 ->set_status_header(401)
                 ->set_content_type('application/json')
@@ -40,7 +40,7 @@ class Auth extends CI_Controller
 
         $this->db->insert($this->config->item('api_token_table'), [
             'user_id' => $user->id,
-            'token' => hash('sha256', $token),
+            'token_hash' => hash('sha256', $token),
             'expires_at' => date('Y-m-d H:i:s', time() + $expiry)
         ]);
 

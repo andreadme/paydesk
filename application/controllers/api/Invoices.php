@@ -8,6 +8,7 @@ class Invoices extends CI_Controller
         parent::__construct();
 
         $this->load->database();
+        $this->load->model('invoice_model');
         $this->load->library('api_auth');
     }
 
@@ -37,10 +38,7 @@ class Invoices extends CI_Controller
 
         if (!$user_id) return;
 
-        $invoices = $this->db
-            ->where('user_id', $user_id)
-            ->get('invoices')
-            ->result();
+        $invoices = $this->invoice_model->get_user_invoices($user_id);
 
         return $this->output
             ->set_content_type('application/json')
@@ -57,11 +55,7 @@ class Invoices extends CI_Controller
 
         if (!$user_id) return;
 
-        $invoice = $this->db
-            ->where('id', $id)
-            ->where('user_id', $user_id)
-            ->get('invoices')
-            ->row();
+        $invoice = $this->invoice_model->get_user_invoice($id, $user_id);
 
         if (!$invoice) {
             return $this->output

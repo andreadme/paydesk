@@ -8,6 +8,7 @@ class Receipts extends CI_Controller
         parent::__construct();
 
         $this->load->database();
+        $this->load->model('receipt_model');
         $this->load->library('api_auth');
     }
 
@@ -38,7 +39,7 @@ class Receipts extends CI_Controller
             return;
         }
 
-        $receipts = $this->db->where('user_id', $user_id)->get('receipts')->result();
+        $receipts = $this->receipt_model->get_user_receipts($user_id);
 
         return $this->output->set_content_type('application/json')->set_output(
             json_encode([
@@ -57,7 +58,7 @@ class Receipts extends CI_Controller
             return;
         }
 
-        $receipt = $this->db->where('id', $id)->where('user_id', $user_id)->get('receipts')->row();
+        $receipt = $this->receipt_model->get_user_receipt($id, $user_id);
 
         if (!$receipt) {
             return $this->output->set_status_header(404)->set_content_type('application/json')->set_output(

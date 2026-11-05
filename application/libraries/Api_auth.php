@@ -34,7 +34,7 @@ class Api_auth
         $table = $this->CI->config->item('api_token_table');
 
         $record = $this->CI->db
-            ->where('token', hash('sha256', $token))
+            ->where('token_hash', hash('sha256', $token))
             ->where('expires_at >=', date('Y-m-d H:i:s'))
             ->get($table)
             ->row();
@@ -53,7 +53,7 @@ class Api_auth
         $table = $this->CI->config->item('api_token_table');
 
         return $this->CI->db
-            ->where('token', hash('sha256', $token))
+            ->where('token_hash', hash('sha256', $token))
             ->delete($table);
     }
 
